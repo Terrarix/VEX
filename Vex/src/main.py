@@ -11,14 +11,14 @@
 from vex import *
 
 brain = Brain()
-controller = C(PRIMARY)
-motor = LeftMotor(Ports.PORT20, GearSetting.RATIO_6_1, False)
-motor = RightMotor(Ports.PORT11, GearSetting.RATIO_6_1, False)
-motor = LeftMotor2(Ports.PORT3, GearSetting.RATIO_6_1, False)
-motor = RightMotor2(Ports.PORT1, GearSetting.RATIO_6_1, False)
-motor = ToggleMotor(Ports.PORT4, GearSetting.RATIO_6_1, False)
-motor = ArmMotor(Ports.PORT19, GearSetting.RATIO_6_1, False)
-motor = ClawMotor(Ports.PORT2, GearSetting.RATIO_6_1, False)
+controller = Controller(PRIMARY)
+LeftMotor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False)
+RightMotor = Motor(Ports.PORT11, GearSetting.RATIO_6_1, True)
+LeftMotor2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, False)
+RightMotor2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
+ToggleMotor = Motor(Ports.PORT4, GearSetting.RATIO_6_1, True)
+ArmMotor = Motor(Ports.PORT19, GearSetting.RATIO_6_1, False)
+ClawMotor = Motor(Ports.PORT2, GearSetting.RATIO_6_1, False)
 
 def autonomous():
     brain.screen.clear_screen()
@@ -34,10 +34,10 @@ def user_control():
     brain.screen.print("driver control")
     i = 0
     while i < 1:
-        APressing = C.axis1()
-        APressing3 = C.axis3()
-        L2Pressing = C.buttonL2()
-        R2Pressing = C.buttonR2()
+        APressing = controller.axis1()
+        APressing3 = controller.axis3()
+        L2Pressing = controller.buttonL2()
+        R2Pressing = controller.buttonR2()
         LeftMotor.spin(FORWARD,(APressing3 + APressing))
         RightMotor.spin(FORWARD,(APressing3 - APressing))
         LeftMotor2.spin(FORWARD,(APressing3 + APressing))
