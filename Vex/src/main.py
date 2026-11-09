@@ -34,10 +34,10 @@ def user_control():
     brain.screen.print("driver control")
     i = 0
     while i < 1:
-        APressing = controller.axis1()
-        APressing3 = controller.axis3()
-        L2Pressing = controller.buttonL2()
-        R2Pressing = controller.buttonR2()
+        APressing = Controller.axis1()
+        APressing3 = Controller.axis3()
+        L2Pressing = Controller.buttonL2()
+        R2Pressing = Controller.buttonR2()
         LeftMotor.spin(FORWARD,(APressing3 + APressing))
         RightMotor.spin(FORWARD,(APressing3 - APressing))
         LeftMotor2.spin(FORWARD,(APressing3 + APressing))
