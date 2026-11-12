@@ -9,6 +9,7 @@
 
 # Library imports
 from vex import *
+import math
 
 brain = Brain()
 controller = Controller(PRIMARY)
@@ -17,6 +18,36 @@ RightMotor = Motor(Ports.PORT11, GearSetting.RATIO_6_1, True)
 LeftMotor2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, False)
 RightMotor2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
 ToggleMotor = Motor(Ports.PORT4, GearSetting.RATIO_6_1, True)
+
+c_x = 0
+c_y = 0
+c_angle = 0
+constant = 0
+error = 2
+
+def distance(x, y, c_x, c_y):
+    x2 = x - c_x
+    y2 = y - c_y
+    x3 = x**2
+    y3 = y**2
+    distance = (x3 + y3)**0.5
+    c_x = x
+    c_y = y
+    return distance
+
+def angle(c_angle, x, y, c_x, c_y):
+    x2 = x - c_x
+    y2 = y - c_y
+    arc_angle = math.atan2(y2, x2)
+    t_angle = arc_angle - c_angle
+    return t_angle
+
+def pid(x, y, c_x, c_y, c_angle, p_angle, constant, error):
+    t_angle = angle(c_angle, x, y, c_x, c_y)
+    cp = c_angle - t_angle
+    cd = c_angle - p_angle
+    velocity = constant * (cp - cd)
+    return velocity
 
 def autonomous():
     brain.screen.clear_screen()
