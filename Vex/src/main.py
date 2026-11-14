@@ -33,7 +33,28 @@ def pid_calculate(KP, KD, KI, last_error, last_time, target_heading):
     return result
 
 class PID:
-    __init__(self, KP, KD, KI)
+    def __init__(self, KP, KD, KI):
+        self.KP=KP
+        self.KD=KD
+        self.KI=KI
+        self.last_error = 0
+        self.last_time = 0
+
+    def calculate(self, target_angle, current_angle):
+        time = brain.timer.time(MSEC)
+        error = current_angle - target_angle
+        P = self.KP * error
+        I = self.KI
+        if time == self.last_time:
+            D= 0
+        else:
+            D = self.KD * ((error-self.last_error)/(time-self.last_time))
+        self.last_error = error
+        self.last_time = time
+        result = P + I + D
+        return result
+
+generic_pid = PID(0.2, 0.2, 0)
 
 def autonomous():
     brain.timer.clear()
