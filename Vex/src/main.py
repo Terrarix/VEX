@@ -32,6 +32,9 @@ def pid_calculate(KP, KD, KI, last_error, last_time, target_heading):
     result = P + I + D
     return result
 
+class PID:
+    __init__(self, KP, KD, KI)
+
 def autonomous():
     brain.timer.clear()
     brain.screen.clear_screen()
