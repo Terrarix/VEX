@@ -11,6 +11,10 @@
 from vex import *
 import math
 
+#######################################################################################################
+""" -----------------------------------ASSIGNING DEVICES--------------------------------------------"""
+#######################################################################################################
+
 brain = Brain()
 controller = Controller(PRIMARY)
 LeftMotor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False)
@@ -18,21 +22,16 @@ RightMotor = Motor(Ports.PORT11, GearSetting.RATIO_6_1, True)
 LeftMotor2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, False)
 RightMotor2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
 ToggleMotor = Motor(Ports.PORT4, GearSetting.RATIO_6_1, True)
+ArmMotor = Motor(Ports.PORT5, GearSetting.RATIO_6_1, True)
+ArmMotor2 = Motor(Ports.PORT6, GearSetting.RATIO_6_1, True)
+ClawMotor = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
 Inertial = Inertial()
 
-def pid_calculate(KP, KD, KI, last_error, last_time, target_heading):
-    heading = Inertial.heading()
-    time = brain.timer.time(MSEC)
-    error = heading - target_heading
-    P = KP * error
-    I = KI
-    D = KD * ((error-last_error)/(time-last_time))
-    last_error = error
-    last_time = time
-    result = P + I + D
-    return result
+######################################################################################################
+""" -----------------------------------CLASSES & FUNCTIONS-----------------------------------------"""
+######################################################################################################
 
-class PID:
+class PID_TURN:
     def __init__(self, KP, KD, KI):
         self.KP=KP
         self.KD=KD
@@ -54,18 +53,52 @@ class PID:
         result = P + I + D
         return result
 
-generic_pid = PID(0.2, 0.2, 0)
+DTT_PID = PID_TURN(0.2, 0.2, 0)
+
+def DT_PID(target_angle):
+    current_angle = Inertial.heading(DEGREES)
+    velocity = DTT_PID.calculate(target_angle, current_angle)
+    LeftMotor.spin(FORWARD,(velocity * 1))
+    LeftMotor2.spin(FORWARD,(velocity * 1))
+    RightMotor.spin(FORWARD,(velocity * 1))
+    RightMotor2.spin(FORWARD,(velocity * 1))
+
+def DRIVETRAIN(DIRECTION, VELOCITY, UNITS, WAIT):
+    LeftMotor.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
+    LeftMotor2.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
+    RightMotor.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
+    RightMotor2.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
+
+def ArmControl(DIRECTION, VELOCITY, UNITS, WAIT):
+    ArmMotor.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
+    ArmMotor2.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
+
+def ClawControl(DIRECTION, WAIT):
+    ClawMotor.spin(DIRECTION, 100, 1, wait=WAIT)
+
+######################################################################################################
+""" -----------------------------------COMPETITION CODE--------------------------------------------"""
+######################################################################################################
+
+##################
+"""----AUTO----"""
+##################
 
 def autonomous():
     brain.timer.clear()
     brain.screen.clear_screen()
     brain.screen.print("autonomous code")
     Inertial.set_heading(0, DEGREES)
-    LeftMotor.spin_for(FORWARD, 2, TURNS, 100, PERCENT, False)
-    RightMotor.spin_for(FORWARD, 2, TURNS, 100, PERCENT, False)
-    LeftMotor2.spin_for(FORWARD, 2, TURNS, 100, PERCENT, False)
-    RightMotor2.spin_for(FORWARD, 2, TURNS, 100, PERCENT, False)
-    ToggleMotor.spin_for(FORWARD, 2, TURNS, 100, PERCENT, False)
+    ToggleMotor.spin(FORWARD, 2, TURNS, False)
+    DRIVETRAIN(REVERSE, 1, TURNS, True)
+    ArmControl(FORWARD, 2, TURNS, False)
+    DRIVETRAIN(FORWARD, 2, TURNS, True)
+    DTT_PID(90)
+    DRIVETRAIN(FORWARD, 2, TURNS, True)
+
+##################
+"""---DRIVER---"""
+##################
 
 def user_control():
     brain.screen.clear_screen()
