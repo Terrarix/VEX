@@ -17,11 +17,11 @@ import math
 
 brain = Brain()
 controller = Controller(PRIMARY)
-LeftMotor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, False)
-RightMotor = Motor(Ports.PORT11, GearSetting.RATIO_6_1, True)
-LeftMotor2 = Motor(Ports.PORT3, GearSetting.RATIO_6_1, False)
-RightMotor2 = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
-ToggleMotor = Motor(Ports.PORT4, GearSetting.RATIO_6_1, True)
+LeftMotor = Motor(Ports.PORT2, GearSetting.RATIO_6_1, False)
+RightMotor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True)
+LeftMotor2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
+RightMotor2 = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True)
+ToggleMotor = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 ArmMotor = Motor(Ports.PORT5, GearSetting.RATIO_6_1, True)
 ArmMotor2 = Motor(Ports.PORT6, GearSetting.RATIO_6_1, True)
 ClawMotor = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
@@ -31,6 +31,7 @@ Inertial = Inertial()
 """ -----------------------------------CLASSES & FUNCTIONS-----------------------------------------"""
 ######################################################################################################
 
+"""
 class PID_TURN:
     def __init__(self, KP, KD, KI):
         self.KP=KP
@@ -54,6 +55,7 @@ class PID_TURN:
         return result
 
 DTT_PID = PID_TURN(0.2, 0.2, 0)
+"""
 
 def DT_PID(target_angle):
     current_angle = Inertial.heading(DEGREES)
@@ -89,12 +91,17 @@ def autonomous():
     brain.screen.clear_screen()
     brain.screen.print("autonomous code")
     Inertial.set_heading(0, DEGREES)
+    """
     ToggleMotor.spin(FORWARD, 2, TURNS, False)
     DRIVETRAIN(REVERSE, 1, TURNS, True)
     ArmControl(FORWARD, 2, TURNS, False)
+    ClawControl(FORWARD, False)
     DRIVETRAIN(FORWARD, 2, TURNS, True)
     DTT_PID(90)
     DRIVETRAIN(FORWARD, 2, TURNS, True)
+    ArmControl(REVERSE, 1.5, TURNS, True)
+    ClawControl(REVERSE, False)
+    """
 
 ##################
 """---DRIVER---"""
