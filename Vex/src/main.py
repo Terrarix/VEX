@@ -110,6 +110,7 @@ def user_control():
     brain.screen.clear_screen()
     brain.screen.print("driver control")
     i = 0
+    p = 0
     while i < 1:
         APressing = controller.axis1.position()
         APressing3 = controller.axis3.position()
@@ -121,6 +122,25 @@ def user_control():
             ToggleMotor.spin(FORWARD, 80)
         else:
             ToggleMotor.spin(FORWARD, 0)
+        if controller.buttonR2.pressing():
+            ArmMotor.spin(FORWARD, 80)
+            ArmMotor2.spin(FORWARD, 80)
+        else:
+            ArmMotor.spin(FORWARD, 0)
+            ArmMotor2.spin(FORWARD, 0)
+        if controller.buttonR2.pressing():
+            ArmMotor.spin(REVERSE, 80)
+            ArmMotor2.spin(REVERSE, 80)
+        else:
+            ArmMotor.spin(REVERSE, 0)
+            ArmMotor2.spin(REVERSE, 0)
+        if controller.buttonL1.pressing():
+            if p == 0:
+                p = 1
+                ClawControl(FORWARD, False)
+            elif p == 1:
+                p = 0
+                ClawControl(REVERSE, False)
 
 # create competition instance
 comp = Competition(user_control, autonomous)
