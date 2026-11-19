@@ -25,7 +25,6 @@ ToggleMotor = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 ArmMotor = Motor(Ports.PORT5, GearSetting.RATIO_6_1, True)
 ArmMotor2 = Motor(Ports.PORT6, GearSetting.RATIO_6_1, True)
 ClawMotor = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
-Inertial = Inertial()
 
 ######################################################################################################
 """ -----------------------------------CLASSES & FUNCTIONS-----------------------------------------"""
@@ -114,12 +113,12 @@ def user_control():
     while i < 1:
         APressing = controller.axis1.position()
         APressing3 = controller.axis3.position()
-        LeftMotor.spin(FORWARD,(APressing3 + APressing))
-        RightMotor.spin(FORWARD,(APressing3 - APressing))
-        LeftMotor2.spin(FORWARD,(APressing3 + APressing))
-        RightMotor2.spin(FORWARD,(APressing3 - APressing))
+        LeftMotor.spin(FORWARD,(APressing3 + APressing) * 4)
+        RightMotor.spin(FORWARD,(APressing3 - APressing) * 4)
+        LeftMotor2.spin(FORWARD,(APressing3 + APressing) * 4)
+        RightMotor2.spin(FORWARD,(APressing3 - APressing) * 4)
         if controller.buttonL2.pressing():
-            ToggleMotor.spin(FORWARD, 100)
+            ToggleMotor.spin(FORWARD, 80)
         else:
             ToggleMotor.spin(FORWARD, 0)
 
