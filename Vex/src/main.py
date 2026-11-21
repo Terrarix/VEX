@@ -23,7 +23,7 @@ LeftMotor2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
 RightMotor2 = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True)
 ToggleMotor = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
 ArmMotor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
-ArmMotor2 = Motor(Ports.PORT21, GearSetting.RATIO_6_1, True)
+ArmMotor2 = Motor(Ports.PORT18, GearSetting.RATIO_6_1, False)
 ClawMotor = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
 
 ######################################################################################################
@@ -114,26 +114,26 @@ def user_control():
     while i < 1:
         APressing = controller.axis1.position()
         APressing3 = controller.axis3.position()
-        LeftMotor.spin(FORWARD,(APressing3 + APressing) * 4)
-        RightMotor.spin(FORWARD,(APressing3 - APressing) * 4)
-        LeftMotor2.spin(FORWARD,(APressing3 + APressing) * 4)
-        RightMotor2.spin(FORWARD,(APressing3 - APressing) * 4)
+        LeftMotor.spin(FORWARD,(APressing3 + APressing) * 12, VOLT)
+        RightMotor.spin(FORWARD,(APressing3 - APressing) * 12, VOLT)
+        LeftMotor2.spin(FORWARD,(APressing3 + APressing) * 12, VOLT)
+        RightMotor2.spin(FORWARD,(APressing3 - APressing) * 12, VOLT)
         if controller.buttonL2.pressing():
             ToggleMotor.spin(FORWARD, 80)
         else:
             ToggleMotor.spin(FORWARD, 0)
         if controller.buttonR1.pressing():
-            ArmMotor.spin(FORWARD, 80)
-            ArmMotor2.spin(FORWARD, 80)
+            ArmMotor.spin(FORWARD, 200, VOLT)
+            ArmMotor2.spin(FORWARD, 200, VOLT)
         else:
-            ArmMotor.spin(FORWARD, 0)
-            ArmMotor2.spin(FORWARD, 0)
+            ArmMotor.spin(FORWARD, 0, VOLT)
+            ArmMotor2.spin(FORWARD, 0, VOLT)
         if controller.buttonR2.pressing():
-            ArmMotor.spin(REVERSE, 200)
-            ArmMotor2.spin(REVERSE, 200)
+            ArmMotor.spin(REVERSE, 200, VOLT)
+            ArmMotor2.spin(REVERSE, 200, VOLT)
         else:
-            ArmMotor.spin(REVERSE, 0)
-            ArmMotor2.spin(REVERSE, 0)
+            ArmMotor.spin(REVERSE, 0, VOLT)
+            ArmMotor2.spin(REVERSE, 0, VOLT)
         if controller.buttonL1.pressing():
             if p == 0:
                 p = 1
