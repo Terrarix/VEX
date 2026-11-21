@@ -22,8 +22,8 @@ RightMotor = Motor(Ports.PORT20, GearSetting.RATIO_6_1, True)
 LeftMotor2 = Motor(Ports.PORT4, GearSetting.RATIO_6_1, False)
 RightMotor2 = Motor(Ports.PORT13, GearSetting.RATIO_6_1, True)
 ToggleMotor = Motor(Ports.PORT3, GearSetting.RATIO_6_1, True)
-ArmMotor = Motor(Ports.PORT5, GearSetting.RATIO_6_1, True)
-ArmMotor2 = Motor(Ports.PORT6, GearSetting.RATIO_6_1, True)
+ArmMotor = Motor(Ports.PORT1, GearSetting.RATIO_6_1, True)
+ArmMotor2 = Motor(Ports.PORT21, GearSetting.RATIO_6_1, True)
 ClawMotor = Motor(Ports.PORT7, GearSetting.RATIO_18_1, True)
 
 ######################################################################################################
@@ -75,7 +75,7 @@ def ArmControl(DIRECTION, VELOCITY, UNITS, WAIT):
     ArmMotor2.spin(DIRECTION, VELOCITY, UNITS, wait=WAIT)
 
 def ClawControl(DIRECTION, WAIT):
-    ClawMotor.spin(DIRECTION, 100, 1, wait=WAIT)
+    ClawMotor.spin(DIRECTION, 100, PERCENT, wait=WAIT)
 
 ######################################################################################################
 """ -----------------------------------COMPETITION CODE--------------------------------------------"""
@@ -122,15 +122,15 @@ def user_control():
             ToggleMotor.spin(FORWARD, 80)
         else:
             ToggleMotor.spin(FORWARD, 0)
-        if controller.buttonR2.pressing():
+        if controller.buttonR1.pressing():
             ArmMotor.spin(FORWARD, 80)
             ArmMotor2.spin(FORWARD, 80)
         else:
             ArmMotor.spin(FORWARD, 0)
             ArmMotor2.spin(FORWARD, 0)
         if controller.buttonR2.pressing():
-            ArmMotor.spin(REVERSE, 80)
-            ArmMotor2.spin(REVERSE, 80)
+            ArmMotor.spin(REVERSE, 200)
+            ArmMotor2.spin(REVERSE, 200)
         else:
             ArmMotor.spin(REVERSE, 0)
             ArmMotor2.spin(REVERSE, 0)
