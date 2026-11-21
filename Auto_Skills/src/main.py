@@ -30,8 +30,12 @@ def autonomous():
     Inertial.set_heading(0, DEGREES)
     DRIVETRAIN(FORWARD, 20, TURNS, True)
 
+def user_control():
+    brain.screen.clear_screen()
+    brain.screen.print("driver control")
+
 # create competition instance
-comp = Competition(autonomous)
+comp = Competition(user_control, autonomous)
 
 # actions to do when the program starts
 brain.screen.clear_screen()
